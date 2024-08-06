@@ -1,0 +1,8 @@
+{
+    "workbench.colorCustomizations": {
+        "quickInput.list.focusBackground": "#00000033",
+        "activityBar.background": "#023430",
+        "titleBar.activeBackground": "#034943",
+        "titleBar.activeForeground": "#E9FEFC"
+    }
+}
