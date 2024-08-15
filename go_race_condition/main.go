@@ -23,30 +23,27 @@ func init() {
 	}
 }
 
-func withdraw(id int, amount int64) {
+func withdraw(id int, amount int64, mtx *sync.Mutex) {
+	mtx.Lock()
 	if foundUser, exist := mapOfUser[id]; exist {
 		foundUser.balance = foundUser.balance - amount
 		mapOfUser[id] = foundUser
-		fmt.Printf("Updated Balance ID %d Balance %d \n\n", mapOfUser[id].ID, mapOfUser[id].balance)
+
 	}
+	mtx.Unlock()
 }
 
 func main() {
 	runtime.GOMAXPROCS(2)
+	var mtx sync.Mutex
 
     var wg sync.WaitGroup
-	var mtx sync.Mutex
 
     for i := 0; i < 10; i++ {
         wg.Add(1)
 
         go func() {
-            for j := 0; j < 10; j++ {
-				mtx.Lock()
-                withdraw(2, 100)
-				mtx.Unlock()
-            }
-
+			withdraw(2, 100, &mtx)
             wg.Done()
         }()
     }

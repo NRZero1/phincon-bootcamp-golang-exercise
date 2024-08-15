@@ -6,6 +6,7 @@ import (
 	"consume_api/utils"
 	"encoding/json"
 	"encoding/xml"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -66,6 +67,8 @@ func ConsumeSoap(w http.ResponseWriter, r *http.Request) {
         utils.NewResponse(http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError, nil).Write(w)
         return
     }
+
+	log.Info().Msg(fmt.Sprintf("%+v", string(res)))
 
 	var soapResponse domain.EnvelopeRes
     err = xml.Unmarshal(res, &soapResponse)
